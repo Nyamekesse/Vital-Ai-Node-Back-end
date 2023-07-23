@@ -12,7 +12,7 @@ datasource db {
 
 // Define the User table
 model User {
-  id                 String              @id @default(uuid())
+  id                 String              @id @unique @default(uuid())
   username           String              @unique
   email              String              @unique
   password           String
@@ -48,10 +48,21 @@ model HealthProfessional {
   userId               String          @unique
   medicalRecords       MedicalRecord[]
   appointments         Appointment[]
+  organization         Organization    @relation(fields: [organizationID], references: [id])
+  organizationID       String
+}
+
+model Organization {
+  id                  String               @id @unique @default(uuid())
+  name                String               @unique
+  location            String
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  healthProfessionals HealthProfessional[]
 }
 
 model MedicalRecord {
-  id                   String             @id @default(uuid())
+  id                   String             @id @unique @default(uuid())
   date                 DateTime
   diagnosis            String
   treatmentDetails     String
@@ -65,7 +76,7 @@ model MedicalRecord {
 }
 
 model Appointment {
-  id                   String             @id @default(uuid())
+  id                   String             @id @unique @default(uuid())
   date                 DateTime
   time                 String
   status               String
