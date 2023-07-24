@@ -27,6 +27,7 @@ export const isHealthProfessional = (
     }
     next();
   } catch (error) {
+    res.clearCookie("token");
     return res.sendStatus(401);
   }
 };

@@ -49,6 +49,7 @@ export const isAuthenticated = async (
     next();
   } catch (error) {
     console.log(error);
+    res.clearCookie("token");
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
