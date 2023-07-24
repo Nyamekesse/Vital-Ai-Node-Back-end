@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "generate-types": "prisma-typegen prisma-types ./prisma/schema.prisma --generateInsertionTypes"
+    "generate-types": "prisma-typegen prisma-types ./prisma/schema.prisma --generateInsertionTypes",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,8 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.0",
     "prisma": "^5.0.0",
@@ -47,5 +50,11 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "validator": "^13.9.0"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
