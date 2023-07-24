@@ -6,6 +6,7 @@ interface DecodedToken {
   id: string;
   userType: string;
   iat: number;
+  [key: string]: any;
 }
 
 interface User {
