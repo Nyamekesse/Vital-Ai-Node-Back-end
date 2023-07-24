@@ -1,5 +1,6 @@
-import {  Request, Response } from "express";
+import { Request, Response } from "express";
 
-export const getUsers = async (req: Request, res: Response) => {
-  res.send("THIS WORKS");
+export const getUsers = (req: Request, res: Response) => {
+  const user = req.user;
+  return res.status(200).json(user).end();
 };
