@@ -27,7 +27,7 @@ export const isAuthenticated = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.signedCookies.token;
+  const token = req.signedCookies.token
   const secret = process.env.SECRET;
   if (!token) return res.sendStatus(401).end();
   try {
