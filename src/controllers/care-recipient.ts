@@ -6,7 +6,7 @@ import { parseISO } from "date-fns";
 const prisma = new PrismaClient();
 
 export const fillProfilePatient = async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+  const userID = req.user!.id;
   const userInput: CareRecipient = req.body;
 
   try {
@@ -46,22 +46,27 @@ export const fillProfilePatient = async (req: Request, res: Response) => {
         .json({ message: "Location must be between 1 and 255 characters" });
     }
 
-    if (!validator.isLength(userInput.healthBio, { min: 1, max: 1000 })) {
+    if (
+      !validator.isLength(userInput.healthBackground, { min: 1, max: 1000 })
+    ) {
       return res
         .status(400)
         .json({ message: "Health bio must be between 1 and 1000 characters" });
     }
+    const defaultDisplayPicture = `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`;
     const user = await prisma.careRecipient.create({
       data: {
         firstName: userInput.firstName,
         lastName: userInput.lastName,
-        dateOfBirth: parseISO(new Date(userInput.dateOfBirth).toISOString()),
+        dateOfBirth: new Date(userInput.dateOfBirth).toISOString(),
         contactInfo: userInput.contactInfo,
         gender: userInput.gender,
         location: userInput.location,
-        healthBio: userInput.healthBio,
-        userId,
-        profilePicture: `https://api.multiavatar.com/${userId}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`,
+        healthBackground: userInput.healthBackground,
+        userID,
+        displayPicture: userInput.displayPicture
+          ? userInput.displayPicture
+          : defaultDisplayPicture,
       },
     });
 

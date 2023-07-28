@@ -5,7 +5,6 @@ import patients from "./patients";
 import healthProfessionals from "./health-professionals";
 
 const router = express.Router();
-
 export default (): express.Router => {
   authentication(router);
   users(router);

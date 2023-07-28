@@ -9,25 +9,13 @@ interface DecodedToken {
   [key: string]: any;
 }
 
-interface User {
-  id: string;
-  userType: string;
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: User;
-    }
-  }
-}
 const prisma = new PrismaClient();
 export const isAuthenticated = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.signedCookies.token
+  const token = req.signedCookies.token;
   const secret = process.env.SECRET;
   if (!token) return res.sendStatus(401).end();
   try {

@@ -8,7 +8,7 @@ export const fillProfileHealthProfessional = async (
   req: Request,
   res: Response
 ) => {
-  const userId = req.user!.id;
+  const userID = req.user!.id;
   const userInput: HealthProfessional = req.body;
 
   try {
@@ -39,17 +39,20 @@ export const fillProfileHealthProfessional = async (
         .status(400)
         .json({ message: "Contact info must be a valid phone number" });
     }
-
+    const defaultDisplayPicture = `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`;
     const user = await prisma.healthProfessional.create({
       data: {
         firstName: userInput.firstName,
         lastName: userInput.lastName,
+        gender: userInput.gender,
         specializationId: userInput.specializationId,
         medicalLicenseNumber: userInput.medicalLicenseNumber,
         contactInfo: userInput.contactInfo,
-        userId,
+        userID,
         organizationID: userInput.organizationID,
-        profilePicture: `https://api.multiavatar.com/${userId}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`,
+        displayPicture: userInput.displayPicture
+          ? userInput.displayPicture
+          : defaultDisplayPicture,
       },
     });
 
