@@ -59,7 +59,7 @@ model HealthProfessional {
 }
 
 model Organization {
-  id        String   @id
+  id        String   @id @default(uuid())
   name      String
   location  String
   createdAt DateTime @default(now())
@@ -69,7 +69,7 @@ model Organization {
 }
 
 model Appointment {
-  id                   String             @id
+  id                   String             @id @default(uuid())
   date                 DateTime
   time                 DateTime
   purpose              String
@@ -83,7 +83,7 @@ model Appointment {
 }
 
 model MedicalRecord {
-  id                   String             @id
+  id                   String             @id @default(uuid())
   date                 DateTime
   diagnosis            String
   treatmentDetails     String
@@ -96,7 +96,7 @@ model MedicalRecord {
 }
 
 model Specialization {
-  id                 String               @id @unique
+  id                 String               @id @unique @default(uuid())
   name               String               @unique
   HealthProfessional HealthProfessional[]
 }

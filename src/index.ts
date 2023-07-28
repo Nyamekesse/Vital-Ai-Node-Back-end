@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import routes from "./routes/index.js";
-import { nanoid } from "nanoid";
 import { AuthUser } from "types/index.js";
 
 dotenv.config();
@@ -21,9 +20,6 @@ if (!process.env.MULTI_AVATAR_API_KEY) {
   console.error("DATABASE_URL must be defined in .env\nEXITING.");
   process.exit(-1);
 }
-
-const id = nanoid();
-console.log(id);
 
 const secret = process.env.SECRET;
 const app = express();
