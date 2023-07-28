@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String               @id @default(uuid())
+  username   String               @unique
+  email      String               @unique
+  password   String
+  userType   UserType
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  patients   CareRecipient[]
+  healthPros HealthProfessional[]
+}
+
+model CareRecipient {
+  firstName        String
+  lastName         String
+  dateOfBirth      DateTime
+  gender           Gender
+  contactInfo      String
+  location         String
+  healthBackground String
+  displayPicture   String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  medicalRecords   MedicalRecord[]
+  user             User            @relation(fields: [userID], references: [id], onDelete: Cascade)
+  userID           String          @unique
+  Appointment      Appointment[]
+}
+
+model HealthProfessional {
+  firstName            String
+  lastName             String
+  gender               Gender
+  specialization       Specialization  @relation(fields: [specializationId], references: [id], onDelete: Cascade)
+  specializationId     String
+  medicalLicenseNumber String
+  contactInfo          String
+  displayPicture       String?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  medicalRecords       MedicalRecord[]
+  user                 User            @relation(fields: [userID], references: [id])
+  userID               String          @unique
+  organization         Organization    @relation(fields: [organizationID], references: [id], onDelete: Cascade)
+  organizationID       String
+  Appointment          Appointment[]
+}
+
+model Organization {
+  id        String   @id
+  name      String
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  healthProfessional HealthProfessional[]
+}
+
+model Appointment {
+  id                   String             @id
+  date                 DateTime
+  time                 DateTime
+  status               Status             @default(PENDING)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  careRecipient        CareRecipient      @relation(fields: [careRecipientID], references: [userID], onDelete: Cascade)
+  careRecipientID      String
+  healthProfessional   HealthProfessional @relation(fields: [healthProfessionalID], references: [userID], onDelete: Cascade)
+  healthProfessionalID String
+}
+
+model MedicalRecord {
+  id                   String             @id
+  date                 DateTime
+  diagnosis            String
+  treatmentDetails     String
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  careRecipient        CareRecipient      @relation(fields: [careRecipientID], references: [userID], onDelete: Cascade)
+  careRecipientID      String
+  healthProfessional   HealthProfessional @relation(fields: [healthProfessionalID], references: [userID], onDelete: Cascade)
+  healthProfessionalID String
+}
+
+model Specialization {
+  id                 String               @id @unique
+  name               String               @unique
+  HealthProfessional HealthProfessional[]
+}
+
+enum UserType {
+  CARE_RECIPIENT
+  HEALTH_PROFESSIONAL
+  ORGANIZATION_ADMIN
+  ADMIN
+}
+
+enum Status {
+  PENDING
+  UPCOMING
+  COMPLETED
+  CANCELLED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
