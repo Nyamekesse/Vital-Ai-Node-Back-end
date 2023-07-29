@@ -59,12 +59,11 @@ model HealthProfessional {
 }
 
 model Organization {
-  id        String   @id @default(uuid())
-  name      String
-  location  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id                 String               @id @default(uuid())
+  name               String
+  location           String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
   healthProfessional HealthProfessional[]
 }
 
