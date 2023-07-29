@@ -97,13 +97,13 @@ export const login = async (req: Request, res: Response) => {
     const secret = process.env.SECRET;
     const token = jwt.sign(payload, secret!);
 
-    res.cookie(user.id, token, {
+    res.cookie("vital_ai_token", token, {
       httpOnly: true,
       // secure: true,
       maxAge: 3600000, // 1 hour
       signed: true,
     });
-
+    req.user = payload;
     return res.status(200).json({ message: "User authenticated successfully" });
   } catch (error) {
     console.log(error);

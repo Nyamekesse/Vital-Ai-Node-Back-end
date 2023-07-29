@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { log } from "console";
 import { Request, Response, NextFunction } from "express";
 import jwt, { decode } from "jsonwebtoken";
 
@@ -15,7 +16,7 @@ export const isAuthenticated = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.signedCookies.token;
+  const token = req.signedCookies.vital_ai_token;
   const secret = process.env.SECRET;
   if (!token) return res.sendStatus(401).end();
   try {

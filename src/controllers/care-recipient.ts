@@ -8,6 +8,16 @@ const prisma = new PrismaClient();
 export const fillProfilePatient = async (req: Request, res: Response) => {
   const userID = req.user!.id;
   const userInput: CareRecipient = req.body;
+  if (
+    !userInput.contactInfo ||
+    !userInput.dateOfBirth ||
+    !userInput.firstName ||
+    !userInput.gender ||
+    !userInput.location ||
+    !userInput.healthBackground ||
+    !userInput.lastName
+  )
+    return res.status(400).json({ message: "All inputs must be filled" });
 
   try {
     if (!validator.isLength(userInput.firstName, { min: 1, max: 255 })) {
@@ -53,7 +63,9 @@ export const fillProfilePatient = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Health bio must be between 1 and 1000 characters" });
     }
-    const defaultDisplayPicture = `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`;
+    const displayPicture = !userInput.displayPicture
+      ? `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`
+      : userInput.displayPicture;
     const user = await prisma.careRecipient.create({
       data: {
         firstName: userInput.firstName,
@@ -64,15 +76,13 @@ export const fillProfilePatient = async (req: Request, res: Response) => {
         location: userInput.location,
         healthBackground: userInput.healthBackground,
         userID,
-        displayPicture: userInput.displayPicture
-          ? userInput.displayPicture
-          : defaultDisplayPicture,
+        displayPicture,
       },
     });
 
     return res.status(201).json({ user });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res.status(500).json({ message: "Failed to create user" });
   }
 };

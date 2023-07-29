@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = prisma.user.findMany();
+    const users = await prisma.user.findMany();
     if (!users) return res.status(404).json({ message: "Empty users" });
-    return res.status(200).json(users);
+    return res.status(200).json({ users });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

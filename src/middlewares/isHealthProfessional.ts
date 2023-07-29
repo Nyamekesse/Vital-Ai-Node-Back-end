@@ -13,7 +13,7 @@ export const isHealthProfessional = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.signedCookies.token
+  const token = req.signedCookies.vital_ai_token;
   const secret = process.env.SECRET;
   if (!token) {
     return res.sendStatus(401);
@@ -22,7 +22,7 @@ export const isHealthProfessional = (
   try {
     const decodedToken = jwt.verify(token, secret!) as DecodedToken;
 
-    if (decodedToken.userType !== "HEALTHPROFESSIONAL") {
+    if (decodedToken.userType !== "HEALTH_PROFESSIONAL") {
       return res.sendStatus(401);
     }
     next();

@@ -10,6 +10,16 @@ export const fillProfileHealthProfessional = async (
 ) => {
   const userID = req.user!.id;
   const userInput: HealthProfessional = req.body;
+  if (
+    !userInput.contactInfo ||
+    !userInput.firstName ||
+    !userInput.lastName ||
+    !userInput.gender ||
+    !userInput.specializationId ||
+    !userInput.organizationID ||
+    !userInput.medicalLicenseNumber
+  )
+    return res.status(400).json({ message: "All inputs must be filled" });
 
   try {
     if (!validator.isLength(userInput.firstName, { min: 1, max: 255 })) {
@@ -39,7 +49,9 @@ export const fillProfileHealthProfessional = async (
         .status(400)
         .json({ message: "Contact info must be a valid phone number" });
     }
-    const defaultDisplayPicture = `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`;
+    const displayPicture = !userInput.displayPicture
+      ? `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`
+      : userInput.displayPicture;
     const user = await prisma.healthProfessional.create({
       data: {
         firstName: userInput.firstName,
@@ -50,9 +62,7 @@ export const fillProfileHealthProfessional = async (
         contactInfo: userInput.contactInfo,
         userID,
         organizationID: userInput.organizationID,
-        displayPicture: userInput.displayPicture
-          ? userInput.displayPicture
-          : defaultDisplayPicture,
+        displayPicture,
       },
     });
 
