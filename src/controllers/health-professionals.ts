@@ -72,3 +72,30 @@ export const fillProfileHealthProfessional = async (
     return res.status(500).json({ message: "Failed to create user" });
   }
 };
+
+export const fetchAllHealthProfessionals = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const healthProfessionals = await prisma.healthProfessional.findMany({
+      select: {
+        firstName: true,
+        lastName: true,
+        specialization: true,
+        displayPicture: true,
+        organizationID: true,
+        userID: true,
+        organization: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    res.json(healthProfessionals);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch health professionals" });
+  }
+};

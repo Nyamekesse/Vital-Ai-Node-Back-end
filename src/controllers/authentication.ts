@@ -99,11 +99,10 @@ export const login = async (req: Request, res: Response) => {
 
     res.cookie("vital_ai_token", token, {
       httpOnly: true,
-      // secure: true,
       maxAge: 3600000, // 1 hour
       signed: true,
+      sameSite: "lax",
     });
-    req.user = payload;
     return res.status(200).json({ message: "User authenticated successfully" });
   } catch (error) {
     console.log(error);

@@ -36,3 +36,18 @@ export const registerSpecialization = async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 };
+
+export const getAllOrganizations = async (req: Request, res: Response) => {
+  try {
+    const organizations = await prisma.organization.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    res.json({ organizations });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch organizations" });
+  }
+};

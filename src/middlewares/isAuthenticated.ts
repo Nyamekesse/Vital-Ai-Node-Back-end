@@ -18,7 +18,7 @@ export const isAuthenticated = async (
 ) => {
   const token = req.signedCookies.vital_ai_token;
   const secret = process.env.SECRET;
-  if (!token) return res.sendStatus(401).end();
+  if (!token) return res.sendStatus(401);
   try {
     const decodedToken = jwt.verify(token, secret!) as DecodedToken;
 
