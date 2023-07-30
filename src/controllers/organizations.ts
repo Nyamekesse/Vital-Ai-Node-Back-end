@@ -2,14 +2,20 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { hospitals } from "../db/organizations";
 import { specializations } from "../db/specialization";
+import { init } from "@paralleldrive/cuid2";
 
 const prisma = new PrismaClient();
+const createId = init({
+  length: 5,
+  fingerprint: process.env.SECRET,
+});
 
 export const registerHospitals = async (req: Request, res: Response) => {
   try {
     for (const hospital of hospitals) {
       await prisma.organization.create({
         data: {
+          id: createId(),
           name: hospital.name,
           location: hospital.location,
         },
@@ -26,6 +32,7 @@ export const registerSpecialization = async (req: Request, res: Response) => {
     for (const specialization of specializations) {
       await prisma.specialization.create({
         data: {
+          id: createId(),
           name: specialization.name.toLocaleLowerCase(),
         },
       });

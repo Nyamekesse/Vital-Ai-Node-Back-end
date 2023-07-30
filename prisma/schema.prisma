@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id         String               @id @default(uuid())
+  id         String               @id
   username   String               @unique
   email      String               @unique
   password   String
@@ -37,6 +37,7 @@ model CareRecipient {
   user             User            @relation(fields: [userID], references: [id], onDelete: Cascade)
   userID           String          @unique
   Appointment      Appointment[]
+  Review           Review[]
 }
 
 model HealthProfessional {
@@ -56,19 +57,22 @@ model HealthProfessional {
   organization         Organization    @relation(fields: [organizationID], references: [id], onDelete: Cascade)
   organizationID       String
   Appointment          Appointment[]
+  Review               Review[]
 }
 
 model Organization {
-  id                 String               @id @default(uuid())
+  id                 String               @id
   name               String
   location           String
+  openTime           DateTime
+  closeTime          DateTime
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   healthProfessional HealthProfessional[]
 }
 
 model Appointment {
-  id                   String             @id @default(uuid())
+  id                   String             @id
   date                 DateTime
   time                 DateTime
   purpose              String
@@ -82,7 +86,7 @@ model Appointment {
 }
 
 model MedicalRecord {
-  id                   String             @id @default(uuid())
+  id                   String             @id
   date                 DateTime
   diagnosis            String
   treatmentDetails     String
@@ -95,9 +99,24 @@ model MedicalRecord {
 }
 
 model Specialization {
-  id                 String               @id @unique @default(uuid())
+  id                 String               @id
   name               String               @unique
   HealthProfessional HealthProfessional[]
+}
+
+model Review {
+  id                   String             @id
+  first_name           String
+  last_name            String
+  text                 String
+  rating               Float
+  healthProfessionalID String
+  healthProfessional   HealthProfessional @relation(fields: [healthProfessionalID], references: [userID])
+  careRecipientID      String
+  careRecipient        CareRecipient      @relation(fields: [careRecipientID], references: [userID])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 enum UserType {

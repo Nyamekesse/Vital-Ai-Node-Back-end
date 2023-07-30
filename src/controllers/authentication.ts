@@ -3,9 +3,13 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import { init } from "@paralleldrive/cuid2";
 
 const prisma = new PrismaClient();
-
+const createId = init({
+  length: 10,
+  fingerprint: process.env.SECRET,
+});
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password, userType } = req.body;
@@ -47,6 +51,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
+        id: createId(),
         username,
         email,
         password: hashedPassword,
