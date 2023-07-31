@@ -94,10 +94,10 @@ export const login = async (req: Request, res: Response) => {
       },
     });
     if (!user)
-      return res.status(401).json({ message: "Email or password invalid" });
+      return res.status(400).json({ message: "Email or password invalid" });
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
-      return res.status(401).json({ message: "Email or password invalid" });
+      return res.status(400).json({ message: "Email or password invalid" });
 
     const payload = { id: user.id, userType: user.userType };
 
@@ -109,6 +109,7 @@ export const login = async (req: Request, res: Response) => {
       signed: true,
       sameSite: "lax",
     });
+
     return res.status(200).json({ message: "User authenticated successfully" });
   } catch (error) {
     console.log(error);

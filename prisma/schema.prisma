@@ -43,12 +43,15 @@ model CareRecipient {
 model HealthProfessional {
   firstName            String
   lastName             String
+  about                String
   gender               Gender
   specialization       Specialization  @relation(fields: [specializationId], references: [id], onDelete: Cascade)
   specializationId     String
   medicalLicenseNumber String
   contactInfo          String
   displayPicture       String?
+  openingTime          DateTime        @map("organization.openTime")
+  closeTime            DateTime        @map("organization.closeTime")
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   medicalRecords       MedicalRecord[]

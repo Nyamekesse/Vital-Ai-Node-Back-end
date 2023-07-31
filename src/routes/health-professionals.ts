@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   fetchAllHealthProfessionals,
   fillProfileHealthProfessional,
+  getDetailsById,
 } from "../controllers/health-professionals";
 import { isHealthProfessional } from "../middlewares/isHealthProfessional";
 
@@ -17,5 +18,10 @@ export default (router: Router) => {
     isAuthenticated,
     isHealthProfessional,
     fillProfileHealthProfessional
+  );
+  router.get(
+    "/details/health-professional/id=:id",
+    isAuthenticated,
+    getDetailsById
   );
 };

@@ -99,3 +99,39 @@ export const fetchAllHealthProfessionals = async (
     res.status(500).json({ error: "Failed to fetch health professionals" });
   }
 };
+
+export const getDetailsById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const healthProfessional = await prisma.healthProfessional.findUnique({
+      where: { userID: id },
+      select: {
+        firstName: true,
+        lastName: true,
+        contactInfo: true,
+        gender: true,
+        displayPicture: true,
+        organization: {
+          select: {
+            name: true,
+          },
+        },
+        specialization: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!healthProfessional) {
+      return res.status(404).json({ message: "Health professional not found" });
+    }
+
+    return res.json(healthProfessional);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
