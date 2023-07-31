@@ -39,6 +39,7 @@ model CareRecipient {
   userID           String          @unique
   Appointment      Appointment[]
   Review           Review[]
+  Connection       Connection[]
 }
 
 model HealthProfessional {
@@ -63,6 +64,17 @@ model HealthProfessional {
   organizationID       String
   Appointment          Appointment[]
   Review               Review[]
+  Connection           Connection[]
+}
+
+model Connection {
+  id                   String             @id
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  careRecipient        CareRecipient      @relation(fields: [careRecipientID], references: [userID])
+  careRecipientID      String
+  healthProfessional   HealthProfessional @relation(fields: [healthProfessionalID], references: [userID])
+  healthProfessionalID String
 }
 
 model Organization {
