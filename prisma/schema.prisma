@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id         String               @id
-  username   String               @unique
-  email      String               @unique
-  password   String
-  userType   UserType
-  createdAt  DateTime             @default(now())
-  updatedAt  DateTime             @updatedAt
-  patients   CareRecipient[]
-  healthPros HealthProfessional[]
+  id             String               @id
+  username       String               @unique
+  email          String               @unique
+  password       String
+  userType       UserType
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  careRecipients CareRecipient[]
+  healthPros     HealthProfessional[]
+  notifications  Notification[]
 }
 
 model CareRecipient {
@@ -30,7 +31,7 @@ model CareRecipient {
   contactInfo      String
   location         String
   healthBackground String
-  displayPicture   String?
+  displayPicture   String
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   medicalRecords   MedicalRecord[]
@@ -99,6 +100,16 @@ model MedicalRecord {
   careRecipientID      String
   healthProfessional   HealthProfessional @relation(fields: [healthProfessionalID], references: [userID], onDelete: Cascade)
   healthProfessionalID String
+}
+
+model Notification {
+  id        String   @id
+  message   String
+  read      Boolean  @default(false)
+  user      User     @relation(fields: [userID], references: [id])
+  userID    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Specialization {
