@@ -50,7 +50,8 @@ model HealthProfessional {
   specializationId     String
   medicalLicenseNumber String
   contactInfo          String
-  displayPicture       String?
+  displayPicture       String
+  experience           Int
   openingTime          DateTime        @map("organization.openTime")
   closeTime            DateTime        @map("organization.closeTime")
   createdAt            DateTime        @default(now())
