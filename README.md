@@ -1,6 +1,6 @@
 # VitalAI Healthcare Platform - Backend
 
-![VitalAI Logo](https://example.com/vitalai-logo.png)
+![VitalAI Logo](https://github.com/Vital-Ai-GH/frontend-web/blob/main/src/assets/Vital-Ai-Cover-Logo.png)
 
 Welcome to the backend repository of VitalAI, a revolutionary healthcare platform that aims to connect patients with licensed medical professionals through advanced Artificial Intelligence.
 
@@ -75,4 +75,4 @@ VitalAI is released under the [MIT License](https://opensource.org/licenses/MIT)
 
 ---
 
-For more information about the front-end of VitalAI, please visit the [frontend repository](https://github.com/yourusername/vitalai-backend). If you have any questions or need support, contact us at [nyamekessesamuel@duck.com](mailto:nyamekessesamuel@duck.com). Thank you for being a part of the VitalAI community!
+For more information about the front-end of VitalAI, please visit the [frontend repository](https://github.com/Vital-Ai-GH/frontend-web/tree/main). If you have any questions or need support, contact us at [nyamekessesamuel@duck.com](mailto:nyamekessesamuel@duck.com). Thank you for being a part of the VitalAI community!
