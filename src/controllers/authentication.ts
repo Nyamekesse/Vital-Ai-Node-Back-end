@@ -6,6 +6,7 @@ import validator from "validator";
 import { init } from "@paralleldrive/cuid2";
 
 const prisma = new PrismaClient();
+const secret = process.env.SECRET;
 const createId = init({
   length: 10,
   fingerprint: process.env.SECRET,
@@ -99,11 +100,11 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Email or password invalid" });
 
     const payload = { id: user.id, userType: user.userType };
-    const secret = process.env.SECRET;
+
     const token = jwt.sign(payload, secret!);
 
     res.cookie("vital_ai_token", token, {
-      httpOnly: true,
+      httpOnly: false,
       maxAge: 3600000, // 1 hour
       signed: true,
       sameSite: "lax",
@@ -116,8 +117,29 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const logout = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
-  if (!userId) return res.sendStatus(401);
-  res.clearCookie(userId);
+  res.clearCookie("vital_ai_token");
+  req.user = null;
   res.sendStatus(200);
+};
+
+interface DecodedToken {
+  id: string;
+  userType: string;
+  iat: number;
+  [key: string]: any;
+}
+
+export const checkAuth = async (req: Request, res: Response) => {
+  const cookie = req.signedCookies.vital_ai_token;
+  if (!cookie) {
+    return res.status(401).json({ isAuthenticated: false });
+  }
+  try {
+    const decodedToken = jwt.verify(cookie, secret!) as DecodedToken;
+    decodedToken.id
+      ? res.status(200).json({ isAuthenticated: true })
+      : res.status(401).json({ isAuthenticated: false });
+  } catch (error) {
+    res.status(401).send("Unauthorized");
+  }
 };

@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { log } from "console";
 import { Request, Response, NextFunction } from "express";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 interface DecodedToken {
   id: string;

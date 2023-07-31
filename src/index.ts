@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import routes from "./routes/index.js";
 import { AuthUser } from "types/index.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 if (!process.env.DATABASE_URL) {
@@ -28,7 +29,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: ["http://localhost:5001", "http://127.0.0.1:5001"],
     credentials: true,
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   })
@@ -47,8 +48,16 @@ declare global {
   }
 }
 
-app.listen(PORT, () =>
-  console.log(`Vital Ai server listening on port ${PORT}`)
-);
+mongoose
+  .connect(process.env.MONGO_DB_CONNECTION)
+  .then(() => {
+    app.listen(PORT, () =>
+      console.log(`Vital Ai server listening on port ${PORT}`)
+    );
+  })
+  .catch((err) => {
+    console.log("Database Connection to MongoDB failed");
+    console.error(err);
+  });
 
 app.use("/", routes());

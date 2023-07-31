@@ -1,3 +1,4 @@
+import { isAuthenticated } from "../middlewares/isAuthenticated";
 import {
   getAllOrganizations,
   registerHospitals,
