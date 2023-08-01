@@ -131,8 +131,6 @@ model Specialization {
 
 model Review {
   id                   String             @id
-  first_name           String
-  last_name            String
   text                 String
   rating               Float
   healthProfessionalID String

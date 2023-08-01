@@ -96,6 +96,21 @@ export const fetchAllHealthProfessionals = async (
             openTime: true,
           },
         },
+        Review: {
+          select: {
+            id: true,
+            rating: true,
+            text: true,
+            careRecipient: {
+              select: {
+                firstName: true,
+                lastName: true,
+                displayPicture: true,
+              },
+            },
+            healthProfessionalID: true,
+          },
+        },
       },
     });
     res.json(healthProfessionals);
@@ -117,6 +132,7 @@ export const getDetailsById = async (req: Request, res: Response) => {
         contactInfo: true,
         gender: true,
         displayPicture: true,
+        about: true,
         organization: {
           select: {
             name: true,
