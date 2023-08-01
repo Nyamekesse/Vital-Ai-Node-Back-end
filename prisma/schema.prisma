@@ -53,14 +53,14 @@ model HealthProfessional {
   contactInfo          String
   displayPicture       String
   experience           Int
-  openingTime          DateTime        @map("organization.openTime")
-  closeTime            DateTime        @map("organization.closeTime")
+  openingTime          DateTime?       @updatedAt @map("organization.openTime")
+  closingTime          DateTime?       @updatedAt @map("organization.closeTime")
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   medicalRecords       MedicalRecord[]
   user                 User            @relation(fields: [userID], references: [id])
   userID               String          @unique
-  organization         Organization    @relation(fields: [organizationID], references: [id], onDelete: Cascade)
+  organization         Organization?   @relation(fields: [organizationID], references: [id], onDelete: Cascade)
   organizationID       String
   Appointment          Appointment[]
   Review               Review[]

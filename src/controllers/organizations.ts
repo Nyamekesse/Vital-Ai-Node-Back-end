@@ -18,6 +18,8 @@ export const registerHospitals = async (req: Request, res: Response) => {
           id: createId(),
           name: hospital.name,
           location: hospital.location,
+          openTime: "",
+          closeTime: "",
         },
       });
     }
