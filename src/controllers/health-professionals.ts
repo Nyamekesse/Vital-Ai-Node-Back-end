@@ -19,7 +19,8 @@ export const fillProfileHealthProfessional = async (
     !userInput.gender ||
     !userInput.specializationId ||
     !userInput.organizationID ||
-    !userInput.medicalLicenseNumber
+    !userInput.medicalLicenseNumber ||
+    !userInput.experience
   )
     return res.status(400).json({ message: "All inputs must be filled" });
 
@@ -43,14 +44,12 @@ export const fillProfileHealthProfessional = async (
     ) {
       return res.status(400).json({ message: "Invalid medical License" });
     }
-    if (!validator.isUUID(userInput.organizationID)) {
-      return res.status(400).json({ message: "Invalid Organization ID" });
-    }
     if (!validator.isMobilePhone(userInput.contactInfo)) {
       return res
         .status(400)
         .json({ message: "Contact info must be a valid phone number" });
     }
+
     const displayPicture = !userInput.displayPicture
       ? `https://api.multiavatar.com/${userID}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`
       : userInput.displayPicture;
@@ -66,7 +65,7 @@ export const fillProfileHealthProfessional = async (
         organizationID: userInput.organizationID,
         displayPicture,
         about,
-        experience: 5,
+        experience: userInput.experience,
       },
     });
 
@@ -93,6 +92,8 @@ export const fetchAllHealthProfessionals = async (
         organization: {
           select: {
             name: true,
+            closeTime: true,
+            openTime: true,
           },
         },
       },
@@ -119,6 +120,8 @@ export const getDetailsById = async (req: Request, res: Response) => {
         organization: {
           select: {
             name: true,
+            closeTime: true,
+            openTime: true,
           },
         },
         specialization: {

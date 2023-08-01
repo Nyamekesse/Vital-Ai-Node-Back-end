@@ -53,8 +53,6 @@ model HealthProfessional {
   contactInfo          String
   displayPicture       String
   experience           Int
-  openingTime          DateTime?       @updatedAt @map("organization.openTime")
-  closingTime          DateTime?       @updatedAt @map("organization.closeTime")
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   medicalRecords       MedicalRecord[]

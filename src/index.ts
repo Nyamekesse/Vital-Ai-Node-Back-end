@@ -60,4 +60,8 @@ mongoose
     console.error(err);
   });
 
-app.use("/", routes());
+app.use("/api", routes());
+
+app.use((req, res) => {
+  res.status(404).send("Not Found");
+});
