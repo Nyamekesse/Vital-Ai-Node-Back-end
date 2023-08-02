@@ -1,4 +1,4 @@
-import { addReview } from "../controllers/reviews";
+import { addReview } from "../controllers/reviewController";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 
 import { Router } from "express";

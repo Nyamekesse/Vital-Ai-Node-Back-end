@@ -1,4 +1,4 @@
-import { fillProfilePatient } from "../controllers/care-recipient";
+import { fillProfilePatient } from "../controllers/careRecipientController";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { Router } from "express";
 

@@ -3,7 +3,7 @@ import {
   getAllOrganizations,
   registerHospitals,
   registerSpecialization,
-} from "../controllers/organizations";
+} from "../controllers/organizationController";
 import { Router } from "express";
 
 export default (router: Router) => {

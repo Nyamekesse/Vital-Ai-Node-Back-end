@@ -4,7 +4,7 @@ import {
   fetchAllHealthProfessionals,
   fillProfileHealthProfessional,
   getDetailsById,
-} from "../controllers/health-professionals";
+} from "../controllers/healthProsController";
 import { isHealthProfessional } from "../middlewares/isHealthProfessional";
 
 export default (router: Router) => {

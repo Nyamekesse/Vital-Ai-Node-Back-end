@@ -1,20 +1,20 @@
 import express from "express";
-import authentication from "./authentication";
-import users from "./users";
-import patients from "./care-recipient";
-import healthProfessionals from "./health-professionals";
-import organization from "./organization";
-import review from "./review";
-import connection from "./connection";
+import authRoutes from "./routesAuth";
+import userRoutes from "./routesUser";
+import patientRoutes from "./routesCareRecipient";
+import healthProfessionalRoutes from "./routesHealthPros";
+import organizationRoutes from "./routesOrganization";
+import reviewRoutes from "./routesReview";
+import connectionRoutes from "./routesConnection";
 
 const router = express.Router();
 export default (): express.Router => {
-  authentication(router);
-  users(router);
-  patients(router);
-  healthProfessionals(router);
-  organization(router);
-  review(router);
-  connection(router);
+  authRoutes(router);
+  userRoutes(router);
+  patientRoutes(router);
+  healthProfessionalRoutes(router);
+  organizationRoutes(router);
+  reviewRoutes(router);
+  connectionRoutes(router);
   return router;
 };

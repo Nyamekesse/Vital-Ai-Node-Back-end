@@ -4,7 +4,7 @@ import {
   login,
   logout,
   register,
-} from "../controllers/authentication";
+} from "../controllers/authController";
 import express from "express";
 
 export default (router: express.Router) => {
