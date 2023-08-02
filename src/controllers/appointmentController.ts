@@ -17,8 +17,7 @@ export async function getAllAppointments(req: Request, res: Response) {
       },
       select: {
         id: true,
-        date: true,
-        time: true,
+        scheduledTime: true,
         purpose: true,
         status: true,
         healthProfessional: {
@@ -38,19 +37,20 @@ export async function getAllAppointments(req: Request, res: Response) {
 }
 
 export async function getAppointDetailsById(req: Request, res: Response) {
-  const { id } = req.params;
+  const { id: appointmentID } = req.params;
+  const { id: careRecipientID } = req.user;
+
   try {
     const appointmentDetails = await prisma.appointment.findUnique({
       where: {
-        id,
+        id: appointmentID,
+        careRecipientID,
       },
     });
     if (!appointmentDetails)
-      return res
-        .status(404)
-        .json({
-          message: "Could not find any details for selected appointment",
-        });
+      return res.status(404).json({
+        message: "Could not find any details for selected appointment",
+      });
     return res.status(200).json(appointmentDetails);
   } catch (error) {
     console.log(error);
@@ -61,14 +61,25 @@ export async function getAppointDetailsById(req: Request, res: Response) {
 export async function addNewAppointment(req: Request, res: Response) {
   const { id } = req.user;
   try {
-    const { date, time, purpose, healthProfessionalID }: Appointment = req.body;
-    if (!date || !time || !purpose || !healthProfessionalID)
+    const { scheduledTime, purpose, healthProfessionalID }: Appointment =
+      req.body;
+    if (!scheduledTime || !purpose || !healthProfessionalID)
       return res.sendStatus(400);
+    const parsedScheduledTime = dayjs(scheduledTime).toISOString();
+    const isBooked = await prisma.appointment.findFirst({
+      where: {
+        scheduledTime: parsedScheduledTime,
+        healthProfessionalID,
+      },
+    });
+    if (isBooked)
+      return res.status(400).json({
+        message: "The selected date and time has already been booked",
+      });
     const appointment = await prisma.appointment.create({
       data: {
         id: createId(),
-        date: dayjs(date).format("YYYY-MM-DD"),
-        time: dayjs(time).format("YYYY-MM-DDTHH:mm:ss"),
+        scheduledTime: parsedScheduledTime,
         purpose,
         careRecipientID: id,
         healthProfessionalID,

@@ -9,7 +9,7 @@ import { Router } from "express";
 export default (router: Router) => {
   router.get("/all/appointments", isAuthenticated, getAllAppointments);
   router.get(
-    "/appointment/:id/details`",
+    "/appointment/:id/details",
     isAuthenticated,
     getAppointDetailsById
   );

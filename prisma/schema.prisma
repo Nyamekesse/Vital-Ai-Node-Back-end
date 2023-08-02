@@ -88,8 +88,7 @@ model Organization {
 
 model Appointment {
   id                   String             @id
-  date                 DateTime
-  time                 DateTime
+  scheduledTime        DateTime
   purpose              String
   status               Status             @default(PENDING)
   createdAt            DateTime           @default(now())
