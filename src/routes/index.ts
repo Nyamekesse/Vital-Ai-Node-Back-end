@@ -6,6 +6,7 @@ import healthProfessionalRoutes from "./routesHealthPros";
 import organizationRoutes from "./routesOrganization";
 import reviewRoutes from "./routesReview";
 import connectionRoutes from "./routesConnection";
+import appointmentRoutes from "./routesAppointment";
 
 const router = express.Router();
 export default (): express.Router => {
@@ -16,5 +17,6 @@ export default (): express.Router => {
   organizationRoutes(router);
   reviewRoutes(router);
   connectionRoutes(router);
+  appointmentRoutes(router);
   return router;
 };
