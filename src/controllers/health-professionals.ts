@@ -96,21 +96,6 @@ export const fetchAllHealthProfessionals = async (
             openTime: true,
           },
         },
-        Review: {
-          select: {
-            id: true,
-            rating: true,
-            text: true,
-            careRecipient: {
-              select: {
-                firstName: true,
-                lastName: true,
-                displayPicture: true,
-              },
-            },
-            healthProfessionalID: true,
-          },
-        },
       },
     });
     res.json(healthProfessionals);
@@ -133,6 +118,8 @@ export const getDetailsById = async (req: Request, res: Response) => {
         gender: true,
         displayPicture: true,
         about: true,
+        experience: true,
+        Connection: true,
         organization: {
           select: {
             name: true,
@@ -143,6 +130,21 @@ export const getDetailsById = async (req: Request, res: Response) => {
         specialization: {
           select: {
             name: true,
+          },
+        },
+        Review: {
+          select: {
+            id: true,
+            rating: true,
+            text: true,
+            careRecipient: {
+              select: {
+                firstName: true,
+                lastName: true,
+                displayPicture: true,
+              },
+            },
+            healthProfessionalID: true,
           },
         },
       },

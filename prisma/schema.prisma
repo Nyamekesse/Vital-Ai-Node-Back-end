@@ -137,9 +137,8 @@ model Review {
   healthProfessional   HealthProfessional @relation(fields: [healthProfessionalID], references: [userID])
   careRecipientID      String
   careRecipient        CareRecipient      @relation(fields: [careRecipientID], references: [userID])
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at           DateTime           @default(now())
+  updated_at           DateTime           @updatedAt
 }
 
 enum UserType {
