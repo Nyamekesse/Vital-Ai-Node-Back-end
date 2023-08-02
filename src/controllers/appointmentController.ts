@@ -46,6 +46,35 @@ export async function getAppointDetailsById(req: Request, res: Response) {
         id: appointmentID,
         careRecipientID,
       },
+      select: {
+        id: true,
+        careRecipient: {
+          select: {
+            firstName: true,
+            lastName: true,
+            gender: true,
+          },
+        },
+        scheduledTime: true,
+        healthProfessional: {
+          select: {
+            firstName: true,
+            lastName: true,
+            displayPicture: true,
+            specialization: {
+              select: {
+                name: true,
+              },
+            },
+            organization: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        purpose: true,
+      },
     });
     if (!appointmentDetails)
       return res.status(404).json({
