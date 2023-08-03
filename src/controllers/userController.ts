@@ -32,6 +32,29 @@ export const getUserById = async (req: Request, res: Response) => {
             dateOfBirth: true,
             displayPicture: true,
             gender: true,
+            Connection: {
+              select: {
+                healthProfessional: {
+                  select: {
+                    userID: true,
+                    displayPicture: true,
+                    firstName: true,
+                    lastName: true,
+                    specialization: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    organization: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    createdAt: true,
+                  },
+                },
+              },
+            },
           },
         });
         return user ? res.status(200).json({ user }) : res.sendStatus(404);
@@ -47,6 +70,19 @@ export const getUserById = async (req: Request, res: Response) => {
             gender: true,
             contactInfo: true,
             displayPicture: true,
+            Connection: {
+              select: {
+                careRecipient: {
+                  select: {
+                    userID: true,
+                    displayPicture: true,
+                    firstName: true,
+                    lastName: true,
+                    createdAt: true,
+                  },
+                },
+              },
+            },
           },
         });
         return user ? res.status(200).json({ user }) : res.sendStatus(404);
