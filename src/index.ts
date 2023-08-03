@@ -10,6 +10,20 @@ import mongoose from "mongoose";
 import { registerSocketServer } from "./socketServer.js";
 import http from "http";
 
+declare module "socket.io" {
+  interface Socket {
+    user?: AuthUser;
+  }
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthUser;
+    }
+  }
+}
+
 dotenv.config();
 if (!process.env.DATABASE_URL) {
   console.error("DATABASE_URL must be defined in .env\nEXITING.");
@@ -41,14 +55,6 @@ app.use(compression());
 app.use(cookieParser(secret));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: AuthUser;
-    }
-  }
-}
 
 const server = http.createServer(app);
 registerSocketServer(server);

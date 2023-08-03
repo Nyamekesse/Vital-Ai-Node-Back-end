@@ -78,6 +78,7 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password)
       return res.status(400).json({ message: "All fields are required" });
 
@@ -101,7 +102,7 @@ export const login = async (req: Request, res: Response) => {
 
     const payload = { id: user.id, userType: user.userType };
 
-    const token = jwt.sign(payload, secret!);
+    const token = jwt.sign(payload, secret);
 
     res.cookie("vital_ai_token", token, {
       httpOnly: false,
