@@ -7,6 +7,8 @@ import cors from "cors";
 import routes from "./routes/index.js";
 import { AuthUser } from "types/index.js";
 import mongoose from "mongoose";
+import { registerSocketServer } from "./socketServer.js";
+import http from "http";
 
 dotenv.config();
 if (!process.env.DATABASE_URL) {
@@ -48,10 +50,13 @@ declare global {
   }
 }
 
+const server = http.createServer(app);
+registerSocketServer(server);
+
 mongoose
   .connect(process.env.MONGO_DB_CONNECTION)
   .then(() => {
-    app.listen(PORT, () =>
+    server.listen(PORT, () =>
       console.log(`Vital Ai server listening on port ${PORT}`)
     );
   })
@@ -61,7 +66,6 @@ mongoose
   });
 
 app.use("/api", routes());
-
 app.use((req, res) => {
   res.status(404).send("Not Found");
 });

@@ -46,6 +46,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.1",
     "raf": "^3.4.1",
+    "socket.io": "^4.7.2",
     "validator": "^13.9.0"
   }
 }
