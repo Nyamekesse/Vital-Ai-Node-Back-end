@@ -1,6 +1,7 @@
 import { newConnectionHandler } from "./socketControllers/newConnectionHandler";
 import { Server } from "socket.io";
 import { isSocketAuthenticated } from "./middlewares/isSocketAuthenticated";
+import { disconnectHandler } from "./socketControllers/disconnectHandler";
 
 export const registerSocketServer = (server) => {
   const io = new Server(server, {
@@ -16,5 +17,8 @@ export const registerSocketServer = (server) => {
 
   io.on("connection", (socket) => {
     newConnectionHandler(socket, io);
+    socket.on("disconnect", () => {
+      disconnectHandler(socket);
+    });
   });
 };
