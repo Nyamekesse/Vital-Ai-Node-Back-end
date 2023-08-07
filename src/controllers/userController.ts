@@ -32,6 +32,11 @@ export const getUserById = async (req: Request, res: Response) => {
             dateOfBirth: true,
             displayPicture: true,
             gender: true,
+            user: {
+              select: {
+                userType: true,
+              },
+            },
             Connection: {
               select: {
                 healthProfessional: {
@@ -50,6 +55,7 @@ export const getUserById = async (req: Request, res: Response) => {
                         name: true,
                       },
                     },
+
                     createdAt: true,
                   },
                 },
@@ -70,6 +76,27 @@ export const getUserById = async (req: Request, res: Response) => {
             gender: true,
             contactInfo: true,
             displayPicture: true,
+            experience: true,
+            about: true,
+            medicalLicenseNumber: true,
+            organization: {
+              select: {
+                id: true,
+                name: true,
+                healthProfessional: {
+                  select: {
+                    userID: true,
+                    firstName: true,
+                    displayPicture: true,
+                  },
+                },
+              },
+            },
+            user: {
+              select: {
+                userType: true,
+              },
+            },
             Connection: {
               select: {
                 careRecipient: {
@@ -78,6 +105,7 @@ export const getUserById = async (req: Request, res: Response) => {
                     displayPicture: true,
                     firstName: true,
                     lastName: true,
+                    location: true,
                     createdAt: true,
                   },
                 },

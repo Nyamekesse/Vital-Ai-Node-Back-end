@@ -1,5 +1,5 @@
 import { init } from "@paralleldrive/cuid2";
-import { Appointment, PrismaClient } from "@prisma/client";
+import { Appointment, PrismaClient, Status, UserType } from "@prisma/client";
 import dayjs from "dayjs";
 import { Request, Response } from "express";
 
@@ -8,18 +8,20 @@ const createId = init({
   length: 5,
   fingerprint: process.env.SECRET,
 });
+
 export async function getAllAppointments(req: Request, res: Response) {
-  const { id } = req.user;
+  const { id, userType } = req.user;
+
   try {
-    const appointments = await prisma.appointment.findMany({
-      where: {
-        careRecipientID: id,
-      },
-      select: {
-        id: true,
-        scheduledTime: true,
-        purpose: true,
-        status: true,
+    let selectFields: any = {
+      id: true,
+      scheduledTime: true,
+      purpose: true,
+      status: true,
+    };
+    if (userType === UserType.CARE_RECIPIENT) {
+      selectFields = {
+        ...selectFields,
         healthProfessional: {
           select: {
             firstName: true,
@@ -27,8 +29,26 @@ export async function getAllAppointments(req: Request, res: Response) {
             displayPicture: true,
           },
         },
+      };
+    } else if (userType === UserType.HEALTH_PROFESSIONAL) {
+      selectFields = {
+        ...selectFields,
+        careRecipient: {
+          select: {
+            firstName: true,
+            lastName: true,
+            displayPicture: true,
+          },
+        },
+      };
+    }
+    const appointments = await prisma.appointment.findMany({
+      where: {
+        OR: [{ careRecipientID: id }, { healthProfessionalID: id }],
       },
+      select: selectFields,
     });
+
     return res.status(200).json(appointments);
   } catch (error) {
     console.log(error);
@@ -38,13 +58,11 @@ export async function getAllAppointments(req: Request, res: Response) {
 
 export async function getAppointDetailsById(req: Request, res: Response) {
   const { id: appointmentID } = req.params;
-  const { id: careRecipientID } = req.user;
 
   try {
     const appointmentDetails = await prisma.appointment.findUnique({
       where: {
         id: appointmentID,
-        careRecipientID,
       },
       select: {
         id: true,
@@ -53,6 +71,7 @@ export async function getAppointDetailsById(req: Request, res: Response) {
             firstName: true,
             lastName: true,
             gender: true,
+            location: true,
           },
         },
         scheduledTime: true,
@@ -116,6 +135,45 @@ export async function addNewAppointment(req: Request, res: Response) {
     });
 
     return res.status(201).json(appointment);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function acceptAppointment(req: Request, res: Response) {
+  const { id } = req.params;
+  try {
+    const appointment = await prisma.appointment.update({
+      where: {
+        id,
+      },
+      data: {
+        status: Status.UPCOMING,
+      },
+    });
+    if (!appointment) return res.sendStatus(404);
+    appointment.status = Status.UPCOMING;
+    return res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+export async function rejectAppointment(req: Request, res: Response) {
+  const { id } = req.params;
+  try {
+    const appointment = await prisma.appointment.update({
+      where: {
+        id,
+      },
+      data: {
+        status: Status.CANCELLED,
+      },
+    });
+    if (!appointment) return res.sendStatus(404);
+    appointment.status = Status.CANCELLED;
+    return res.sendStatus(200);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });

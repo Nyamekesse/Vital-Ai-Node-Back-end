@@ -19,7 +19,7 @@ export const addConnection = async (req: Request, res: Response) => {
       },
     });
     if (existingConnection)
-      return res.status(400).json({ message: "Already connected" });
+      return res.status(400).json({ message: "Already added to favorites" });
     const newConnection = await prisma.connection.create({
       data: {
         id: createId(),

@@ -57,13 +57,33 @@ export const getAllOrganizations = async (req: Request, res: Response) => {
         openTime: true,
       },
     });
-    // organizations.forEach((org) => {
-    //   console.log(dayjs(org.closeTime).format("HH:mm:A"));
-    // });
 
     res.json({ organizations });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch organizations" });
+  }
+};
+
+export const getAllOrganizationTeam = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const healthProfessionals = await prisma.organization.findUnique({
+      where: { id },
+      select: {
+        healthProfessional: {
+          select: {
+            userID: true,
+            firstName: true,
+            lastName: true,
+            displayPicture: true,
+          },
+        },
+      },
+    });
+    res.json(healthProfessionals);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch staff members" });
   }
 };

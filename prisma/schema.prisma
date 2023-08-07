@@ -114,8 +114,9 @@ model MedicalRecord {
 
 model Notification {
   id        String   @id
+  title     String
   message   String
-  read      Boolean  @default(false)
+  isRead    Boolean  @default(false)
   user      User     @relation(fields: [userID], references: [id])
   userID    String
   createdAt DateTime @default(now())

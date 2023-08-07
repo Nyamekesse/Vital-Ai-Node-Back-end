@@ -1,7 +1,10 @@
+import { isHealthProfessional } from "../middlewares/isHealthProfessional";
 import {
+  acceptAppointment,
   addNewAppointment,
   getAllAppointments,
   getAppointDetailsById,
+  rejectAppointment,
 } from "../controllers/appointmentController";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { Router } from "express";
@@ -14,4 +17,16 @@ export default (router: Router) => {
     getAppointDetailsById
   );
   router.post("/new/appointment", isAuthenticated, addNewAppointment);
+  router.put(
+    "/appointment/:id/details/accept",
+    isAuthenticated,
+    isHealthProfessional,
+    acceptAppointment
+  );
+  router.put(
+    "/appointment/:id/details/reject",
+    isAuthenticated,
+    isHealthProfessional,
+    rejectAppointment
+  );
 };
