@@ -172,7 +172,6 @@ export async function rejectAppointment(req: Request, res: Response) {
       },
     });
     if (!appointment) return res.sendStatus(404);
-    appointment.status = Status.CANCELLED;
     return res.sendStatus(200);
   } catch (error) {
     console.error(error);

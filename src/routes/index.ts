@@ -7,6 +7,7 @@ import organizationRoutes from "./routesOrganization";
 import reviewRoutes from "./routesReview";
 import connectionRoutes from "./routesConnection";
 import appointmentRoutes from "./routesAppointment";
+import notificationRoutes from "./routesNotification";
 
 const router = express.Router();
 export default (): express.Router => {
@@ -18,5 +19,6 @@ export default (): express.Router => {
   reviewRoutes(router);
   connectionRoutes(router);
   appointmentRoutes(router);
+  notificationRoutes(router);
   return router;
 };

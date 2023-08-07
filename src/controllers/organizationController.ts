@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 import { hospitals } from "../mocks/organizations";
 import { specializations } from "../mocks/specialization";
 import { init } from "@paralleldrive/cuid2";
-import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 const createId = init({
