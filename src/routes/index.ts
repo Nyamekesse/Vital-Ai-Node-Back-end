@@ -8,6 +8,7 @@ import reviewRoutes from "./routesReview";
 import connectionRoutes from "./routesConnection";
 import appointmentRoutes from "./routesAppointment";
 import notificationRoutes from "./routesNotification";
+import chatRoutes from "./routesChat";
 
 const router = express.Router();
 export default (): express.Router => {
@@ -20,5 +21,6 @@ export default (): express.Router => {
   connectionRoutes(router);
   appointmentRoutes(router);
   notificationRoutes(router);
+  chatRoutes(router);
   return router;
 };

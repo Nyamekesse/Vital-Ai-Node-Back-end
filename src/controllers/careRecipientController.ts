@@ -5,7 +5,7 @@ import validator from "validator";
 const prisma = new PrismaClient();
 
 export const fillProfilePatient = async (req: Request, res: Response) => {
-  const userID = req.user!.id;
+  const userID = req.user.id;
   const userInput: CareRecipient = req.body;
   if (
     !userInput.contactInfo ||
