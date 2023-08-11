@@ -72,6 +72,7 @@ export async function getAppointDetailsById(req: Request, res: Response) {
             lastName: true,
             gender: true,
             location: true,
+            userID: true,
           },
         },
         scheduledTime: true,
@@ -80,6 +81,7 @@ export async function getAppointDetailsById(req: Request, res: Response) {
             firstName: true,
             lastName: true,
             displayPicture: true,
+            userID: true,
             specialization: {
               select: {
                 name: true,

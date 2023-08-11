@@ -2,6 +2,7 @@ import { newConnectionHandler } from "./socketControllers/newConnectionHandler";
 import { Server } from "socket.io";
 import { isSocketAuthenticated } from "./middlewares/isSocketAuthenticated";
 import { disconnectHandler } from "./socketControllers/disconnectHandler";
+import { directMessageController } from "./socketControllers/directMessageController";
 
 export const registerSocketServer = (server) => {
   const io = new Server(server, {
@@ -17,6 +18,9 @@ export const registerSocketServer = (server) => {
 
   io.on("connection", (socket) => {
     newConnectionHandler(socket, io);
+    socket.on("direct-message", (data) => {
+      directMessageController(socket, data);
+    });
     socket.on("disconnect", () => {
       disconnectHandler(socket);
     });
