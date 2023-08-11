@@ -3,13 +3,15 @@ import { Server } from "socket.io";
 import { isSocketAuthenticated } from "./middlewares/isSocketAuthenticated";
 import { disconnectHandler } from "./socketControllers/disconnectHandler";
 import { directMessageController } from "./socketControllers/directMessageController";
+import { directChatHistoryController } from "./socketControllers/directChatHistoryController";
 
+export let io: Server;
 export const registerSocketServer = (server) => {
-  const io = new Server(server, {
+  io = new Server(server, {
     cors: {
       origin: ["http://localhost:5001", "http://127.0.0.1:5001"],
       credentials: true,
-      methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+      methods: ["GET", "POST"],
     },
     path: "/s",
   });
@@ -23,6 +25,9 @@ export const registerSocketServer = (server) => {
     });
     socket.on("disconnect", () => {
       disconnectHandler(socket);
+    });
+    socket.on("direct-chat-history", (data) => {
+      directChatHistoryController(socket, data);
     });
   });
 };

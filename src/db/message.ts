@@ -1,15 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 
 interface IMessage extends Document {
-  senderId: string;
-  receiverId: string;
+  author: string;
   content: string;
   date: Date;
 }
 
 const messageSchema = new Schema({
-  senderId: { type: String, required: true },
-  receiverId: { type: String, required: true },
+  author: { type: String, required: true },
   content: { type: String, required: true },
   date: { type: Date, required: true },
 });
