@@ -1,11 +1,7 @@
 import { updateChatHistory } from "../socketUpdaters/chat";
 import { Conversation } from "../db/conversation";
-import { Server, Socket } from "socket.io";
-
-interface Data {
-  receiverId: string;
-  message: string;
-}
+import { Socket } from "socket.io";
+import { Data } from "../types";
 
 export const directChatHistoryController = async (
   socket: Socket,

@@ -1,9 +1,5 @@
-import { Schema, model, Document } from "mongoose";
-
-interface IConversation extends Document {
-  participants: string[];
-  messages: string[];
-}
+import { Schema, model } from "mongoose";
+import { IConversation } from "../types";
 
 const conversationSchema = new Schema({
   participants: [

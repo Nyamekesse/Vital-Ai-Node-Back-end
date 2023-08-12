@@ -4,6 +4,8 @@ import { isSocketAuthenticated } from "./middlewares/isSocketAuthenticated";
 import { disconnectHandler } from "./socketControllers/disconnectHandler";
 import { directMessageController } from "./socketControllers/directMessageController";
 import { directChatHistoryController } from "./socketControllers/directChatHistoryController";
+import { isAuthenticated } from "./middlewares/isAuthenticated";
+import { Request, Response, NextFunction } from "express";
 
 export let io: Server;
 export const registerSocketServer = (server) => {
@@ -16,6 +18,11 @@ export const registerSocketServer = (server) => {
     path: "/s",
   });
 
+  io.engine.use((req: Request, res: Response, next: NextFunction) => {
+    isAuthenticated;
+    next();
+  });
+
   io.use(isSocketAuthenticated);
 
   io.on("connection", (socket) => {
@@ -23,11 +30,13 @@ export const registerSocketServer = (server) => {
     socket.on("direct-message", (data) => {
       directMessageController(socket, data);
     });
-    socket.on("disconnect", () => {
-      disconnectHandler(socket);
-    });
+
     socket.on("direct-chat-history", (data) => {
       directChatHistoryController(socket, data);
+    });
+
+    socket.on("disconnect", () => {
+      disconnectHandler(socket);
     });
   });
 };

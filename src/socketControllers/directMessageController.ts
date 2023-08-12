@@ -1,7 +1,7 @@
 import { updateChatHistory } from "../socketUpdaters/chat";
 import { Conversation } from "../db/conversation";
 import { Message } from "../db/message";
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
 
 interface Data {
   receiverId: string;
@@ -25,16 +25,13 @@ export const directMessageController = async (socket: Socket, data: Data) => {
       conversation.messages.push(newMessage._id);
       await conversation.save();
 
-      // perform and update to sender and receiver if is online
       updateChatHistory(conversation._id.toString());
     } else {
-      // create new conversation if not exists
       const newConversation = await Conversation.create({
         messages: [newMessage._id],
         participants: [authorId, receiverId],
       });
 
-      // perform and update to sender and receiver if is online
       updateChatHistory(newConversation._id.toString());
     }
   } catch (error) {
