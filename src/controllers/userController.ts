@@ -122,3 +122,68 @@ export const getUserById = async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 };
+
+export const updateUserProfile = async (req: Request, res: Response) => {
+  const { id, userType } = req.user;
+  const formData = req.body;
+  try {
+    if (userType === "CARE_RECIPIENT") {
+      const {
+        firstName,
+        lastName,
+        displayPicture,
+        gender,
+        dateOfBirth,
+        contactInfo,
+        healthBackground,
+        location,
+      } = formData;
+      await prisma.careRecipient.update({
+        where: {
+          userID: id,
+        },
+        data: {
+          firstName,
+          lastName,
+          displayPicture,
+          gender,
+          dateOfBirth: new Date(dateOfBirth).toISOString(),
+          contactInfo,
+          healthBackground,
+          location,
+        },
+      });
+    } else if (userType === "HEALTH_PROFESSIONAL") {
+      const {
+        firstName,
+        lastName,
+        experience,
+        medicalLicenseNumber,
+        gender,
+        contactInfo,
+        displayPicture,
+        about,
+      } = formData;
+
+      await prisma.healthProfessional.update({
+        where: {
+          userID: id,
+        },
+        data: {
+          firstName,
+          lastName,
+          displayPicture,
+          gender,
+          experience,
+          contactInfo,
+          medicalLicenseNumber,
+          about,
+        },
+      });
+    }
+    res.status(200).json({ message: "User profile updated" });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
