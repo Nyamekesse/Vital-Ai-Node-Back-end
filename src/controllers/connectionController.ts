@@ -33,3 +33,27 @@ export const addConnection = async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 };
+
+export const removeConnection = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const careRecipientID = req.user.id;
+  try {
+    const connectionToRemove = await prisma.connection.findFirst({
+      where: {
+        careRecipientID,
+        healthProfessionalID: id,
+      },
+    });
+    if (!connectionToRemove)
+      return res.status(400).json({ message: "Favorite does not exist" });
+    await prisma.connection.delete({
+      where: {
+        id: connectionToRemove.id,
+      },
+    });
+    return res.status(200).json({ connectionToRemove });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
