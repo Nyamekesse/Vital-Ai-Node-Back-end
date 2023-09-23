@@ -174,7 +174,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
           lastName,
           displayPicture,
           gender,
-          experience,
+          experience: parseInt(experience),
           contactInfo,
           medicalLicenseNumber,
           about,
