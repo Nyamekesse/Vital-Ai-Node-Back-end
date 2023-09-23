@@ -105,7 +105,6 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(payload, secret);
 
     res.cookie("vital_ai_token", token, {
-      domain: ".onrender.com",
       httpOnly: false,
       maxAge: 3600000, // 1 hour
       signed: true,
