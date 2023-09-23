@@ -45,7 +45,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5001", "http://127.0.0.1:5001","https://vital-ai-web.onrender.com"],
+    origin: [
+      "http://localhost:5001",
+      "http://127.0.0.1:5001",
+      "https://vital-ai-web.onrender.com",
+    ],
     credentials: true,
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   })
@@ -72,6 +76,6 @@ mongoose
   });
 
 app.use("/api", routes());
-app.use((req, res) => {
-  res.status(404).send("Not Found");
-});
+// app.use((req, res) => {
+//   res.status(404).send("Not Found");
+// });
