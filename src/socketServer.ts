@@ -11,7 +11,11 @@ export let io: Server;
 export const registerSocketServer = (server) => {
   io = new Server(server, {
     cors: {
-      origin: ["http://localhost:5001", "http://127.0.0.1:5001"],
+      origin: [
+        "http://localhost:5001",
+        "http://127.0.0.1:5001",
+        "https://vital-ai-web.onrender.com",
+      ],
       credentials: true,
       methods: ["GET", "POST"],
     },
