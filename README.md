@@ -41,7 +41,7 @@ To run the backend locally, ensure you have the following software installed on 
 
 Follow these steps to set up the backend locally:
 
-1. Clone the repository: `git clone https://github.com/yourusername/vitalai-backend.git`
+1. Clone the repository: `git clone https://github.com/Vital-Ai-GH/backend-node-server.git`
 2. Install dependencies: `cd vitalai-backend` and `npm install`
 
 ## Database Setup
