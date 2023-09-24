@@ -38,6 +38,8 @@ if (!process.env.MULTI_AVATAR_API_KEY) {
   process.exit(-1);
 }
 
+export var environment = process.env.NODE_ENV || "development";
+
 const secret = process.env.SECRET;
 const PORT = process.env.PORT || 5000;
 

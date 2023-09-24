@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import { init } from "@paralleldrive/cuid2";
+import { environment } from "../index";
 
 const prisma = new PrismaClient();
 const secret = process.env.SECRET;
@@ -104,13 +105,23 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign(payload, secret);
 
-    res.cookie("vital_ai_token", token, {
-      httpOnly: false,
-      maxAge: 3600000, // 1 hour
-      signed: true,
-      secure: true,
-      sameSite: "none",
-    });
+    if (environment === "development") {
+      res.cookie("vital_ai_token", token, {
+        httpOnly: false,
+        maxAge: 3600000, // 1 hour
+        signed: true,
+        sameSite: "lax",
+      });
+    } else {
+      res.cookie("vital_ai_token", token, {
+        domain: ".onrender.com",
+        httpOnly: false,
+        maxAge: 3600000, // 1 hour
+        signed: true,
+        secure: true,
+        sameSite: "none",
+      });
+    }
 
     return res.status(200).json({ message: "User authenticated successfully" });
   } catch (error) {
