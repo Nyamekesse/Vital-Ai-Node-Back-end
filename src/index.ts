@@ -76,9 +76,7 @@ mongoose
   .connect(process.env.MONGO_DB_CONNECTION)
   .then(() => {
     server.listen(PORT, () =>
-      console.log(
-        `Vital Ai server listening on port ${PORT} and environment on ${environment}`
-      )
+      console.log(`Vital Ai server listening on port ${PORT}`)
     );
   })
   .catch((err) => {

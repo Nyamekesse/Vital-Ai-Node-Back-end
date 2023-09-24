@@ -114,7 +114,6 @@ export const login = async (req: Request, res: Response) => {
       });
     } else {
       res.cookie("vital_ai_token", token, {
-        domain: ".onrender.com",
         httpOnly: false,
         maxAge: 3600000, // 1 hour
         signed: true,
