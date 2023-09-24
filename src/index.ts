@@ -9,6 +9,7 @@ import { AuthUser } from "types/index.js";
 import mongoose from "mongoose";
 import { registerSocketServer } from "./socketServer.js";
 import http from "http";
+import path from "path";
 
 declare module "socket.io" {
   interface Socket {
@@ -62,6 +63,12 @@ app.use(cookieParser(secret));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 const server = http.createServer(app);
 registerSocketServer(server);
 
@@ -69,7 +76,9 @@ mongoose
   .connect(process.env.MONGO_DB_CONNECTION)
   .then(() => {
     server.listen(PORT, () =>
-      console.log(`Vital Ai server listening on port ${PORT}`)
+      console.log(
+        `Vital Ai server listening on port ${PORT} and environment on ${environment}`
+      )
     );
   })
   .catch((err) => {
