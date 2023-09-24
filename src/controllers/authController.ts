@@ -119,7 +119,8 @@ export const login = async (req: Request, res: Response) => {
         maxAge: 3600000, // 1 hour
         signed: true,
         secure: true,
-        sameSite: "none",
+        sameSite: "strict",
+        path: "/",
       });
     }
 
