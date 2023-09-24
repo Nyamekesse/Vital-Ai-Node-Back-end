@@ -9,6 +9,7 @@ import { AuthUser } from "types/index.js";
 import mongoose from "mongoose";
 import { registerSocketServer } from "./socketServer.js";
 import http from "http";
+import path from "path";
 
 declare module "socket.io" {
   interface Socket {
@@ -61,6 +62,12 @@ app.use(compression());
 app.use(cookieParser(secret));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 const server = http.createServer(app);
 registerSocketServer(server);
