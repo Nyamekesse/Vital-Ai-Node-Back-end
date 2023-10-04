@@ -55,10 +55,9 @@ export const getUserById = async (req: Request, res: Response) => {
                         name: true,
                       },
                     },
-
-                    createdAt: true,
                   },
                 },
+                createdAt: true,
               },
             },
           },
