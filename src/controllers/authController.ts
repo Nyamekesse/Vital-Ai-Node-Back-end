@@ -120,7 +120,6 @@ export const login = async (req: Request, res: Response) => {
         signed: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "none",
-        domain: "*.onrender.com",
       });
     }
 
