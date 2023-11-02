@@ -49,7 +49,7 @@ app.use(
     origin: [
       "http://localhost:5001",
       "http://127.0.0.1:5001",
-      "https://vital-ai-web.onrender.com",
+      "https://frontend-test-j1xl.onrender.com",
     ],
     credentials: true,
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
