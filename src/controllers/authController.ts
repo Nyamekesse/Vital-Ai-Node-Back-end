@@ -109,14 +109,14 @@ export const login = async (req: Request, res: Response) => {
     if (environment === "development") {
       res.cookie("vital_ai_token", token, {
         httpOnly: false,
-        maxAge: 3600000, // 1 hour
+        maxAge: 10800000, // 3 hours
         signed: true,
         sameSite: "lax",
       });
     } else {
       res.cookie("vital_ai_token", token, {
         httpOnly: false,
-        maxAge: 3600000, // 1 hour
+        maxAge: 10800000, // 3 hours
         signed: true,
         secure: true,
         sameSite: "strict",

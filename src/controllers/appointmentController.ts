@@ -95,6 +95,7 @@ export async function getAppointDetailsById(req: Request, res: Response) {
           },
         },
         purpose: true,
+        status: true,
       },
     });
     if (!appointmentDetails)

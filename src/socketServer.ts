@@ -39,6 +39,8 @@ export const registerSocketServer = (server) => {
       directChatHistoryController(socket, data);
     });
 
+   
+
     socket.on("disconnect", () => {
       disconnectHandler(socket);
     });
