@@ -6,7 +6,6 @@ import validator from "validator";
 import { init } from "@paralleldrive/cuid2";
 
 const prisma = new PrismaClient();
-const environment = process.env.NODE_ENV || "development";
 
 const secret = process.env.SECRET;
 const createId = init({
@@ -106,22 +105,13 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign(payload, secret);
 
-    if (environment === "development") {
-      res.cookie("vital_ai_token", token, {
-        httpOnly: false,
-        maxAge: 10800000, // 3 hours
-        signed: true,
-        sameSite: "lax",
-      });
-    } else {
-      res.cookie("vital_ai_token", token, {
-        httpOnly: false,
-        maxAge: 10800000, // 3 hours
-        signed: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      });
-    }
+    res.cookie("vital_ai_token", token, {
+      httpOnly: false,
+      maxAge: 10800000, // 3 hours
+      signed: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
 
     return res.status(200).json({ message: "User authenticated successfully" });
   } catch (error) {
