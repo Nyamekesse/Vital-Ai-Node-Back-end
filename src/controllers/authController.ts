@@ -107,7 +107,6 @@ export const login = async (req: Request, res: Response) => {
 
     res.cookie("vital_ai_token", token, {
       httpOnly: false,
-      maxAge: 10800000, // 3 hours
       signed: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
