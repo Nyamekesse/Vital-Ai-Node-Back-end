@@ -2,8 +2,8 @@ import { init } from "@paralleldrive/cuid2";
 import { Appointment, PrismaClient, Status, UserType } from "@prisma/client";
 import dayjs from "dayjs";
 import { Request, Response } from "express";
+import prisma from "../lib/prisma-instance";
 
-const prisma = new PrismaClient();
 const createId = init({
   length: 5,
   fingerprint: process.env.SECRET,

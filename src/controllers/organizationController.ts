@@ -3,8 +3,8 @@ import { PrismaClient } from "@prisma/client";
 import { hospitals } from "../mocks/organizations";
 import { specializations } from "../mocks/specialization";
 import { init } from "@paralleldrive/cuid2";
+import prisma from "../lib/prisma-instance";
 
-const prisma = new PrismaClient();
 const createId = init({
   length: 5,
   fingerprint: process.env.SECRET,

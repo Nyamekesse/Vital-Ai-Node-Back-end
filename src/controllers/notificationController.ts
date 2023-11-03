@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createId } from "@paralleldrive/cuid2";
-
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma-instance";
 
 export const getNotifications = async (req: Request, res: Response) => {
   const { id } = req.user;

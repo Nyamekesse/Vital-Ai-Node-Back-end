@@ -4,8 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import { init } from "@paralleldrive/cuid2";
-
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma-instance";
 
 const secret = process.env.SECRET;
 const createId = init({

@@ -1,8 +1,7 @@
 import { CareRecipient, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
+import prisma from "../lib/prisma-instance";
 import validator from "validator";
-
-const prisma = new PrismaClient();
 
 export const fillProfilePatient = async (req: Request, res: Response) => {
   const userID = req.user.id;

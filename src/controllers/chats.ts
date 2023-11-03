@@ -7,8 +7,7 @@ import {
   PrismaClient,
   UserType,
 } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma-instance";
 
 export const getAllChatsByUserId = async (req: Request, res: Response) => {
   const { id, userType } = req.user;

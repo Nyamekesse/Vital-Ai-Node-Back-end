@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import prisma from "../lib/prisma-instance";
 
 interface DecodedToken {
   id: string;
@@ -9,7 +10,6 @@ interface DecodedToken {
   [key: string]: any;
 }
 
-const prisma = new PrismaClient();
 export const isAuthenticated = async (
   req: Request,
   res: Response,
