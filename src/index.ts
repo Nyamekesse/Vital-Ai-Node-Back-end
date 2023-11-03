@@ -52,6 +52,7 @@ app.use(
       "https://frontend-test-j1xl.onrender.com",
     ],
     credentials: true,
+    optionsSuccessStatus: 200,
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   })
 );
