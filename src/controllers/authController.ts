@@ -106,13 +106,16 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(payload, secret);
 
     res.cookie("vital_ai_token", token, {
+      domain: "https://frontend-test-j1xl.onrender.com",
       httpOnly: false,
       signed: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
 
-    return res.status(200).json({ message: "User authenticated successfully" });
+    return res
+      .status(200)
+      .json({ message: "User authenticated successfully", token });
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
