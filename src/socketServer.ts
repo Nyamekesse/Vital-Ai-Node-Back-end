@@ -14,7 +14,7 @@ export const registerSocketServer = (server) => {
       origin: [
         "http://localhost:5001",
         "http://127.0.0.1:5001",
-        "https://vital-ai-web.onrender.com",
+        "https://frontend-test-j1xl.onrender.com",
       ],
       credentials: true,
       methods: ["GET", "POST"],
@@ -38,8 +38,6 @@ export const registerSocketServer = (server) => {
     socket.on("direct-chat-history", (data) => {
       directChatHistoryController(socket, data);
     });
-
-   
 
     socket.on("disconnect", () => {
       disconnectHandler(socket);
