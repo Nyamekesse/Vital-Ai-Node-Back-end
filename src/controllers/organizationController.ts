@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import { hospitals } from "../mocks/organizations";
 import { specializations } from "../mocks/specialization";
 import { init } from "@paralleldrive/cuid2";

@@ -1,4 +1,4 @@
-import { HealthProfessional, PrismaClient } from "@prisma/client";
+import { HealthProfessional } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";
 import validator from "validator";

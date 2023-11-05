@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "../lib/prisma-instance";
 

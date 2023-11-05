@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { CareRecipient, HealthProfessional } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";
 
@@ -14,11 +14,13 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const getUserById = async (req: Request, res: Response) => {
+  let user: CareRecipient | HealthProfessional;
+
   try {
     if (req.user) {
       const { id, userType } = req.user;
       if (userType === "CARE_RECIPIENT") {
-        const user = await prisma.careRecipient.findUnique({
+        user = (await prisma.careRecipient.findUnique({
           where: {
             userID: id,
           },
@@ -36,34 +38,10 @@ export const getUserById = async (req: Request, res: Response) => {
                 userType: true,
               },
             },
-            Connection: {
-              select: {
-                healthProfessional: {
-                  select: {
-                    userID: true,
-                    displayPicture: true,
-                    firstName: true,
-                    lastName: true,
-                    specialization: {
-                      select: {
-                        name: true,
-                      },
-                    },
-                    organization: {
-                      select: {
-                        name: true,
-                      },
-                    },
-                  },
-                },
-                createdAt: true,
-              },
-            },
           },
-        });
-        return user ? res.status(200).json({ user }) : res.sendStatus(404);
+        })) as unknown as CareRecipient;
       } else if (userType === "HEALTH_PROFESSIONAL") {
-        const user = await prisma.healthProfessional.findUnique({
+        user = (await prisma.healthProfessional.findUnique({
           where: {
             userID: id,
           },
@@ -95,24 +73,10 @@ export const getUserById = async (req: Request, res: Response) => {
                 userType: true,
               },
             },
-            Connection: {
-              select: {
-                careRecipient: {
-                  select: {
-                    userID: true,
-                    displayPicture: true,
-                    firstName: true,
-                    lastName: true,
-                    location: true,
-                    createdAt: true,
-                  },
-                },
-              },
-            },
           },
-        });
-        return user ? res.status(200).json({ user }) : res.sendStatus(404);
+        })) as unknown as HealthProfessional;
       }
+      return user ? res.status(200).json({ user }) : res.sendStatus(404);
     }
     return res.sendStatus(401);
   } catch (error) {

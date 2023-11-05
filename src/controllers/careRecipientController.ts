@@ -1,4 +1,4 @@
-import { CareRecipient, PrismaClient } from "@prisma/client";
+import { CareRecipient } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";
 import validator from "validator";

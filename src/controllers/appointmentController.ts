@@ -1,5 +1,5 @@
 import { init } from "@paralleldrive/cuid2";
-import { Appointment, PrismaClient, Status, UserType } from "@prisma/client";
+import { Appointment, Status, UserType } from "@prisma/client";
 import dayjs from "dayjs";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";

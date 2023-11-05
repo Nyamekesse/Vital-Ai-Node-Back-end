@@ -1,12 +1,6 @@
 import { Request, Response } from "express";
 import { Conversation, IConversation } from "../db/conversation";
-import { log } from "console";
-import {
-  CareRecipient,
-  HealthProfessional,
-  PrismaClient,
-  UserType,
-} from "@prisma/client";
+import { CareRecipient, HealthProfessional, UserType } from "@prisma/client";
 import prisma from "../lib/prisma-instance";
 
 export const getAllChatsByUserId = async (req: Request, res: Response) => {

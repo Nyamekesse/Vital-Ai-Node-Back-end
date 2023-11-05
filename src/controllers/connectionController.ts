@@ -1,5 +1,5 @@
 import { init } from "@paralleldrive/cuid2";
-import { PrismaClient } from "@prisma/client";
+import { UserType } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";
 
@@ -52,6 +52,58 @@ export const removeConnection = async (req: Request, res: Response) => {
       },
     });
     return res.status(200).json({ connectionToRemove });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
+
+export const getAllConnections = async (req: Request, res: Response) => {
+  const userID = req.user.id;
+  const userType = req.user.userType;
+  let connectionList = [];
+  try {
+    if (userType === UserType.CARE_RECIPIENT) {
+      connectionList = await prisma.connection.findMany({
+        where: {
+          careRecipientID: userID,
+        },
+        select: {
+          id: true,
+          healthProfessional: {
+            select: {
+              userID: true,
+              firstName: true,
+              lastName: true,
+              displayPicture: true,
+              organization: {
+                select: {
+                  name: true,
+                },
+              },
+              specialization: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          createdAt: true,
+        },
+      });
+    } else if (userType === UserType.HEALTH_PROFESSIONAL) {
+      connectionList = await prisma.connection.findMany({
+        where: {
+          healthProfessionalID: userID,
+        },
+        select: {
+          id: true,
+          careRecipient: true,
+          createdAt: true,
+        },
+      });
+    }
+    return res.status(200).json(connectionList);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

@@ -78,6 +78,15 @@ mongoose
   });
 
 app.use("/api", routes());
-// app.use((req, res) => {
-//   res.status(404).send("Not Found");
-// });
+
+app.use(function (req, res, next) {
+  res.status(405).send({
+    error: "Method Not Allowed",
+    message:
+      "The method you are trying to use is not allowed for this resource.",
+  });
+});
+
+app.use((req, res) => {
+  res.status(404).send("Not Found");
+});
