@@ -9,6 +9,7 @@ import connectionRoutes from "./routesConnection";
 import appointmentRoutes from "./routesAppointment";
 import notificationRoutes from "./routesNotification";
 import chatRoutes from "./routesChat";
+import serverUptime from "./serverUptime";
 
 const router = express.Router();
 export default (): express.Router => {
@@ -22,5 +23,6 @@ export default (): express.Router => {
   appointmentRoutes(router);
   notificationRoutes(router);
   chatRoutes(router);
+  serverUptime(router);
   return router;
 };
