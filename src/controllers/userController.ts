@@ -33,11 +33,6 @@ export const getUserById = async (req: Request, res: Response) => {
             dateOfBirth: true,
             displayPicture: true,
             gender: true,
-            user: {
-              select: {
-                userType: true,
-              },
-            },
           },
         })) as unknown as CareRecipient;
       } else if (userType === "HEALTH_PROFESSIONAL") {
@@ -66,11 +61,6 @@ export const getUserById = async (req: Request, res: Response) => {
                     displayPicture: true,
                   },
                 },
-              },
-            },
-            user: {
-              select: {
-                userType: true,
               },
             },
           },
