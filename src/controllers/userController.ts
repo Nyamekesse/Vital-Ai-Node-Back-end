@@ -1,6 +1,56 @@
 import { CareRecipient, HealthProfessional } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";
+import { v2 as cloudinary } from "cloudinary";
+import { Fields, Files, IncomingForm } from "formidable";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+  signature_algorithm: "sha256",
+});
+
+const isFileValid = (mimetype: string) => {
+  const validTypes = ["jpg", "jpeg", "png"];
+  if (validTypes.indexOf(mimetype) === -1) {
+    return false;
+  }
+  return true;
+};
+
+export const uploadImage = async (req: Request, res: Response) => {
+  const form = new IncomingForm({
+    allowEmptyFiles: false,
+    maxFileSize: 5 * 1024 * 1024,
+  });
+
+  form.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
+    if (err) {
+      console.log(err.message);
+      return res.status(400).json({
+        message: "There was an error parsing the file",
+      });
+    }
+    try {
+      const localFilePath = files.profileImage[0].filepath;
+      const mimeType = files.profileImage[0].mimetype.split("/")[1].trim();
+      const isValid = isFileValid(mimeType);
+      if (isValid) {
+        const result = await cloudinary.uploader.upload(localFilePath);
+        return res.status(200).json({
+          message: "Image uploaded successfully",
+          imageUrl: result.url,
+        });
+      } else {
+        return res.sendStatus(422);
+      }
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+  });
+};
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
