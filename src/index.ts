@@ -9,7 +9,6 @@ import { AuthUser } from "types/index.js";
 import mongoose from "mongoose";
 import { registerSocketServer } from "./socketServer.js";
 import http from "http";
-import path from "path";
 
 declare module "socket.io" {
   interface Socket {
@@ -43,7 +42,6 @@ const secret = process.env.SECRET;
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-// app.set("trust proxy", 1);
 app.use(
   cors({
     origin: [

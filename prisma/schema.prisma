@@ -28,6 +28,7 @@ model CareRecipient {
   lastName         String
   dateOfBirth      DateTime
   gender           Gender
+  age              Int?
   contactInfo      String
   location         String
   healthBackground String
