@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id             String               @id
-  username       String               @unique
-  email          String               @unique
-  password       String
-  userType       UserType
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  careRecipients CareRecipient[]
-  healthPros     HealthProfessional[]
-  notifications  Notification[]
+  id               String               @id
+  username         String               @unique
+  email            String               @unique
+  password         String
+  userType         UserType
+  profileCompleted Boolean              @default(false)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  careRecipients   CareRecipient[]
+  healthPros       HealthProfessional[]
+  notifications    Notification[]
 }
 
 model CareRecipient {
@@ -28,7 +29,7 @@ model CareRecipient {
   lastName         String
   dateOfBirth      DateTime
   gender           Gender
-  age              Int?
+  age              Int
   contactInfo      String
   location         String
   healthBackground String
