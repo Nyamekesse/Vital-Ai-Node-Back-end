@@ -70,6 +70,7 @@ export async function getAppointDetailsById(req: Request, res: Response) {
           select: {
             firstName: true,
             lastName: true,
+            displayPicture: true,
             gender: true,
             location: true,
             userID: true,
