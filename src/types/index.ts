@@ -1,8 +1,9 @@
-import {  Document } from "mongoose";
+import { Document } from "mongoose";
 
 export interface AuthUser {
   id: string;
   userType: string;
+  profileCompleted: boolean;
 }
 
 export interface Data {

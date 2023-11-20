@@ -11,6 +11,7 @@ export const fillProfilePatient = async (req: Request, res: Response) => {
     !userInput.dateOfBirth ||
     !userInput.firstName ||
     !userInput.gender ||
+    !userInput.age ||
     !userInput.location ||
     !userInput.healthBackground ||
     !userInput.lastName
@@ -71,6 +72,7 @@ export const fillProfilePatient = async (req: Request, res: Response) => {
         dateOfBirth: new Date(userInput.dateOfBirth).toISOString(),
         contactInfo: userInput.contactInfo,
         gender: userInput.gender,
+        age: userInput.age,
         location: userInput.location,
         healthBackground: userInput.healthBackground,
         userID,

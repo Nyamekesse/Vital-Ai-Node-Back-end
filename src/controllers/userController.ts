@@ -1,8 +1,9 @@
-import { CareRecipient, HealthProfessional } from "@prisma/client";
+import { CareRecipient, HealthProfessional, User } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma-instance";
 import { v2 as cloudinary } from "cloudinary";
 import { Fields, Files, IncomingForm } from "formidable";
+import jwt from "jsonwebtoken";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -10,7 +11,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
   signature_algorithm: "sha256",
 });
-
+const secret = process.env.SECRET;
 const isFileValid = (mimetype: string) => {
   const validTypes = ["jpg", "jpeg", "png"];
   if (validTypes.indexOf(mimetype) === -1) {
@@ -187,6 +188,113 @@ export const updateUserProfile = async (req: Request, res: Response) => {
       });
     }
     res.status(200).json({ message: "User profile updated" });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
+
+export const registerUserProfile = async (req: Request, res: Response) => {
+  const { id, userType } = req.user;
+  const formData: CareRecipient | HealthProfessional = req.body;
+
+  const displayPicture = !formData.displayPicture
+    ? `https://api.multiavatar.com/${id}.svg?apikey=${process.env.MULTI_AVATAR_API_KEY}`
+    : formData.displayPicture;
+  let user: User;
+  try {
+    if (userType === "CARE_RECIPIENT") {
+      const {
+        firstName,
+        lastName,
+        gender,
+        age,
+        dateOfBirth,
+        contactInfo,
+        healthBackground,
+        location,
+      } = formData as CareRecipient;
+      await prisma.careRecipient.create({
+        data: {
+          userID: id,
+          firstName,
+          lastName,
+          displayPicture,
+          age: Number(age),
+          gender,
+          dateOfBirth: new Date(dateOfBirth).toISOString(),
+          contactInfo,
+          healthBackground,
+          location,
+        },
+      });
+    } else if (userType === "HEALTH_PROFESSIONAL") {
+      const {
+        firstName,
+        lastName,
+        specializationId,
+        gender,
+        medicalLicenseNumber,
+        contactInfo,
+        organizationID,
+        experience,
+        about,
+      } = formData as HealthProfessional;
+
+      await prisma.healthProfessional.create({
+        data: {
+          firstName,
+          lastName,
+          gender,
+          medicalLicenseNumber,
+          contactInfo,
+          experience: Number(experience),
+          displayPicture,
+          about,
+          specialization: {
+            connect: {
+              id: specializationId,
+            },
+          },
+          user: {
+            connect: {
+              id,
+            },
+          },
+          organization: {
+            connect: {
+              id: organizationID,
+            },
+          },
+        },
+      });
+    }
+
+    user = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        profileCompleted: true,
+      },
+    });
+    const payload = {
+      id: user.id,
+      userType: user.userType,
+      profileCompleted: user.profileCompleted,
+    };
+
+    const token = jwt.sign(payload, secret);
+
+    res.cookie("vital_ai_token", token, {
+      httpOnly: false,
+      signed: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+    res
+      .status(200)
+      .json({ message: "User profile created successfully", token });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

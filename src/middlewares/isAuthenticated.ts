@@ -5,6 +5,7 @@ import prisma from "../lib/prisma-instance";
 interface DecodedToken {
   id: string;
   userType: string;
+  profileCompleted: boolean;
   iat: number;
   [key: string]: any;
 }
@@ -24,8 +25,8 @@ export const isAuthenticated = async (
       where: { id: decodedToken.id },
       select: {
         id: true,
-        username: true,
         userType: true,
+        profileCompleted: true,
       },
     });
 

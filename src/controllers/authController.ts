@@ -13,6 +13,7 @@ const createId = init({
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password, userType } = req.body;
+
     if (!username || !email || !password || !userType) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -99,7 +100,11 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch)
       return res.status(400).json({ message: "Email or password invalid" });
 
-    const payload = { id: user.id, userType: user.userType };
+    const payload = {
+      id: user.id,
+      userType: user.userType,
+      profileCompleted: user.profileCompleted,
+    };
 
     const token = jwt.sign(payload, secret);
 

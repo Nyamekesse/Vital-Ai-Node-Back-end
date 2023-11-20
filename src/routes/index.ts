@@ -10,6 +10,7 @@ import appointmentRoutes from "./routesAppointment";
 import notificationRoutes from "./routesNotification";
 import chatRoutes from "./routesChat";
 import serverUptime from "./serverUptime";
+import specializationRoutes from "./routesSpecialization";
 
 const router = express.Router();
 export default (): express.Router => {
@@ -23,6 +24,7 @@ export default (): express.Router => {
   appointmentRoutes(router);
   notificationRoutes(router);
   chatRoutes(router);
+  specializationRoutes(router);
   serverUptime(router);
   return router;
 };
