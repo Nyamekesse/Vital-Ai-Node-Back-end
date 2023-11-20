@@ -58,7 +58,7 @@ model HealthProfessional {
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   medicalRecords       MedicalRecord[]
-  user                 User            @relation(fields: [userID], references: [id])
+  user                 User            @relation(fields: [userID], references: [id], onDelete: Cascade)
   userID               String          @unique
   organization         Organization?   @relation(fields: [organizationID], references: [id], onDelete: Cascade)
   organizationID       String
