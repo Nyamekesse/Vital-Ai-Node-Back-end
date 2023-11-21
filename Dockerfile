@@ -14,6 +14,10 @@ COPY . .
 
 RUN npm run build
 
+RUN apk update && apk add bash
+
+SHELL ["/bin/bash", "-c"]
+
 EXPOSE 8080
 
 CMD ["/bin/bash", "docker-entrypoint.sh"]
