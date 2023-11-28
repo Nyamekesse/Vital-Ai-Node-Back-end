@@ -287,7 +287,7 @@ export const registerUserProfile = async (req: Request, res: Response) => {
     const token = jwt.sign(payload, secret);
 
     res.cookie("vital_ai_token", token, {
-      httpOnly: false,
+      httpOnly: process.env.NODE_ENV === "production" ? true : false,
       signed: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",

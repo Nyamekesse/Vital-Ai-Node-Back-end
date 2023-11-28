@@ -9,6 +9,8 @@ import { AuthUser } from "types/index.js";
 import mongoose from "mongoose";
 import { registerSocketServer } from "./socketServer.js";
 import http from "http";
+import Bree from "bree";
+import path from "path";
 
 declare module "socket.io" {
   interface Socket {
@@ -62,6 +64,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const server = http.createServer(app);
 registerSocketServer(server);
+
+const bree = new Bree({
+  jobs: [
+    {
+      name: "checkAppointments",
+      interval: "30m",
+      path: path.join(__dirname, "jobs", "checkAppointments.js"),
+    },
+  ],
+  root: false,
+});
+bree.start();
 
 mongoose
   .connect(process.env.MONGO_DB_CONNECTION)
